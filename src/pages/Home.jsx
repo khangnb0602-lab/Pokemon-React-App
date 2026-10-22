@@ -1,50 +1,46 @@
 import { useEffect, useState } from "react";
 import PokemonCard from "../components/PokemonCard";
-import { getPokemonList } from "../services/pokemonApi";
+import { getAllPokemon } from "../services/pokemonApi";
 import ErrorMessage from "../components/ErrorMessage";
 import Loader from "../components/Loader";
 
 const PAGE_SIZE = 20;
 
 export default function Home() {
-    const [pokemon, setPokemon] = useState([]);
-    const [offset, setOffset] = useState(0);
-    const [hasMore, setHasMore] = useState(true);
+    const [allPokemon, setAllPokemon] = useState([]);
+    const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
     useEffect(() => {
         async function load() {
-            setLoading(true);
             try {
-                const data = await getPokemonList(PAGE_SIZE, offset);
-                setPokemon((prev) => [...prev, ...data.results]);
-                setHasMore(Boolean(data.next));
-            } catch (err) {
+                setAllPokemon(await getAllPokemon());
+            } catch {
                 setError("Could not load Pokémon. Please try again.");
             } finally {
                 setLoading(false);
             }
         }
         load();
-    }, [offset]);
+    }, []);
 
+    if (loading) return <Loader />;
     if (error) return <ErrorMessage message={error} />;
 
     return (
         <>
             <h1>Browse Pokémon</h1>
             <div className="grid">
-                {pokemon.map((p) => (
+                {allPokemon.slice(0, visibleCount).map((p) => (
                     <PokemonCard key={p.name} name={p.name} url={p.url} />
                 ))}
             </div>
 
-            {loading && <Loader />}
-            {!loading && hasMore && (
+            {visibleCount < allPokemon.length && (
                 <button
                     className="btn"
-                    onClick={() => setOffset((o) => o + PAGE_SIZE)}
+                    onClick={() => setVisibleCount((n) => n + PAGE_SIZE)}
                 >
                     Load more
                 </button>
