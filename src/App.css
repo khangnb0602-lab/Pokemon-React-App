@@ -235,7 +235,7 @@ h3 {
 
 /* Search */
 .search {
-    width: 100%;
+    flex: 1 1 260px;
     padding: 0.7rem 1rem;
     border: 1px solid #d1d5db;
     border-radius: 999px;

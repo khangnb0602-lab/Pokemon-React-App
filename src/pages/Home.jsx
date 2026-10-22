@@ -46,33 +46,35 @@ export default function Home() {
     return (
         <>
             <h1>Browse Pokémon</h1>
-            <input
-                type="search"
-                className="search"
-                placeholder="Search Pokémon by name..."
-                aria-label="Search Pokémon by name"
-                value={query}
-                onChange={(e) => {
-                    setQuery(e.target.value);
-                    setVisibleCount(PAGE_SIZE);
-                }}
-            />
-            <select
-                className="filter-select"
-                aria-label="Filter by generation"
-                value={generation}
-                onChange={(e) => {
-                    setGeneration(e.target.value);
-                    setVisibleCount(PAGE_SIZE);
-                }}
-            >
-                <option value="all">All generations</option>
-                {GENERATIONS.map((g) => (
-                    <option key={g.id} value={g.id}>
-                        {g.label} ({g.region})
-                    </option>
-                ))}
-            </select>
+            <div className="filters">
+                <input
+                    type="search"
+                    className="search"
+                    placeholder="Search Pokémon by name..."
+                    aria-label="Search Pokémon by name"
+                    value={query}
+                    onChange={(e) => {
+                        setQuery(e.target.value);
+                        setVisibleCount(PAGE_SIZE);
+                    }}
+                />
+                <select
+                    className="filter-select"
+                    aria-label="Filter by generation"
+                    value={generation}
+                    onChange={(e) => {
+                        setGeneration(e.target.value);
+                        setVisibleCount(PAGE_SIZE);
+                    }}
+                >
+                    <option value="all">All generations</option>
+                    {GENERATIONS.map((g) => (
+                        <option key={g.id} value={g.id}>
+                            {g.label} ({g.region})
+                        </option>
+                    ))}
+                </select>
+            </div>
             <p className="results-count">
                 Showing {visible.length} of {filtered.length} Pokémon
             </p>
