@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { getPokemonList } from '../services/pokemonApi';
+import PokemonCard from '../components/PokemonCard';
 
 export default function Home() {
     const [pokemon, setPokemon] = useState([]);
@@ -29,10 +30,10 @@ export default function Home() {
     }
 
     return (
-        <ul>
+        <div className="pokemon-grid">
             {pokemon.map((p) => (
-                <li key={p.name}>{p.name}</li>
+                <PokemonCard key={p.name} name={p.name} url={p.url} />
             ))}
-        </ul>
+        </div>
     )
 }
