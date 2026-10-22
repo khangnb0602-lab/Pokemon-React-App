@@ -5,6 +5,7 @@ import ErrorMessage from "../components/ErrorMessage";
 import Loader from "../components/Loader";
 import { GENERATIONS } from "../data/generations";
 import { getIdFromUrl } from "../utils/pokemon";
+import { LEGENDARY_IDS } from "../data/legendary";
 
 const PAGE_SIZE = 20;
 
@@ -16,6 +17,7 @@ export default function Home() {
 
     const [query, setQuery] = useState("");
     const [generation, setGeneration] = useState("all");
+    const [legendaryOnly, setLegendaryOnly] = useState(false);
 
     useEffect(() => {
         async function load() {
@@ -39,7 +41,8 @@ export default function Home() {
     const filtered = allPokemon.filter((p) => {
         const id = getIdFromUrl(p.url);
         const inGeneration = !range || (id >= range.start && id <= range.end);
-        return inGeneration && p.name.includes(term);
+        const matchesLegendary = !legendaryOnly || LEGENDARY_IDS.has(id);
+        return inGeneration && matchesLegendary && p.name.includes(term);
     });
     const visible = filtered.slice(0, visibleCount);
 
@@ -74,6 +77,17 @@ export default function Home() {
                         </option>
                     ))}
                 </select>
+                <label className="filter-check">
+                    <input
+                        type="checkbox"
+                        checked={legendaryOnly}
+                        onChange={(e) => {
+                            setLegendaryOnly(e.target.checked);
+                            setVisibleCount(PAGE_SIZE);
+                        }}
+                    />
+                    Legendary
+                </label>
             </div>
             <p className="results-count">
                 Showing {visible.length} of {filtered.length} Pokémon

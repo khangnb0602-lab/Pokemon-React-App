@@ -281,6 +281,26 @@ h3 {
     outline-offset: 1px;
 }
 
+/* Legendary toggle */
+
+.filter-check {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.7rem 1rem;
+    border: 1px solid #d1d5db;
+    border-radius: 999px;
+    background: var(--surface);
+    cursor: pointer;
+    user-select: none;
+}
+
+.filter-check input {
+    accent-color: var(--accent);
+    width: 1.1rem;
+    height: 1.1rem;
+    cursor: pointer;
+}
 
 @media (max-width: 480px) {
     .stat {
