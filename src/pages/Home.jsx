@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import PokemonCard from "../components/PokemonCard";
 import { getPokemonList } from "../services/pokemonApi";
+import ErrorMessage from "../components/ErrorMessage";
+import Loader from "../components/Loader";
 
 const PAGE_SIZE = 20;
 
@@ -27,7 +29,7 @@ export default function Home() {
         load();
     }, [offset]);
 
-    if (error) return <p>{error}</p>;
+    if (error) return <ErrorMessage message={error} />;
 
     return (
         <>
@@ -38,7 +40,7 @@ export default function Home() {
                 ))}
             </div>
 
-            {loading && <p className="status">Loading...</p>}
+            {loading && <Loader />}
             {!loading && hasMore && (
                 <button
                     className="btn"
