@@ -12,8 +12,8 @@ export default function PokemonCard({ name, url }) {
     return (
         <Link to={`/pokemon/${name}`} className="card">
             <img src={image} alt={name} loading="lazy" />
-            <span className="card-id">#{id.padStart(3, '0')}</span>
-            <h2 className="card-name">{name}</h2>
+            <span className="card__id">#{id.padStart(3, '0')}</span>
+            <h2 className="card__name">{name}</h2>
         </Link>
     );
 }

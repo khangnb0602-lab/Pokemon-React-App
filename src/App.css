@@ -21,7 +21,7 @@ body {
 
 a {
     color: inherit;
-    text-decoration: semibold;
+    text-decoration: none;
 }
 
 .container {

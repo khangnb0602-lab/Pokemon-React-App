@@ -3,6 +3,7 @@ import Navbar from './components/Navbar'
 import Home from './pages/Home'
 import PokemonDetails from './pages/PokemonDetails'
 import NotFound from './pages/NotFound'
+import './App.css'
 
 function App() {
 
