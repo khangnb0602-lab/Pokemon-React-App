@@ -3,6 +3,8 @@ import PokemonCard from "../components/PokemonCard";
 import { getAllPokemon } from "../services/pokemonApi";
 import ErrorMessage from "../components/ErrorMessage";
 import Loader from "../components/Loader";
+import { GENERATIONS } from "../data/generations";
+import { getIdFromUrl } from "../utils/pokemon";
 
 const PAGE_SIZE = 20;
 
@@ -13,6 +15,7 @@ export default function Home() {
     const [error, setError] = useState(null);
 
     const [query, setQuery] = useState("");
+    const [generation, setGeneration] = useState("all");
 
     useEffect(() => {
         async function load() {
@@ -31,7 +34,13 @@ export default function Home() {
     if (error) return <ErrorMessage message={error} />;
 
     const term = query.trim().toLowerCase();
-    const filtered = allPokemon.filter((p) => p.name.includes(term));
+    const range = GENERATIONS.find((g) => String(g.id) === generation);
+
+    const filtered = allPokemon.filter((p) => {
+        const id = getIdFromUrl(p.url);
+        const inGeneration = !range || (id >= range.start && id <= range.end);
+        return inGeneration && p.name.includes(term);
+    });
     const visible = filtered.slice(0, visibleCount);
 
     return (
@@ -48,6 +57,22 @@ export default function Home() {
                     setVisibleCount(PAGE_SIZE);
                 }}
             />
+            <select
+                className="filter-select"
+                aria-label="Filter by generation"
+                value={generation}
+                onChange={(e) => {
+                    setGeneration(e.target.value);
+                    setVisibleCount(PAGE_SIZE);
+                }}
+            >
+                <option value="all">All generations</option>
+                {GENERATIONS.map((g) => (
+                    <option key={g.id} value={g.id}>
+                        {g.label} ({g.region})
+                    </option>
+                ))}
+            </select>
             <p className="results-count">
                 Showing {visible.length} of {filtered.length} Pokémon
             </p>
